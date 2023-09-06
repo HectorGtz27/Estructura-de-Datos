@@ -5,17 +5,16 @@
 
 class Registro {
 public:
-	std::string fecha;
-	std::string hora;
-	char punto_entrada;
-	std::string ubi;
+    std::string fecha;
+    std::string hora;
+    char punto_entrada;
+    std::string ubi;
 
-	Registro(const std::string& f, const std::string& h, char p, const std::string& u);
-	void Merge(std::vector<int>& nums, int inicio, int mitad, int fin);
-	void oredenaMerge(std::vector<int>& nums, int inicio, int fin);
+    // Constructor predeterminado sin argumentos
+    Registro() : fecha(""), hora(""), punto_entrada('\0'), ubi("") {}
 
-private:
-
-
-
+    Registro(const std::string& f, const std::string& h, char p, const std::string& u);
+    static void ordenaMerge(std::vector<Registro>& registros, int inicio, int fin);
+    static void merge(std::vector<Registro>& registros, int inicio, int mitad, int fin);
+    static int busquedaBinaria(const std::vector<Registro>& registros, const std::string& serieABuscar);
 };
