@@ -1,19 +1,44 @@
-// ActIntegral.cpp : Este archivo contiene la función "main". La ejecución del programa comienza y termina ahí.
-//
-
+//main.cpp
 #include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+#include "SituacionP.h"
+using namespace std;
 
-int main()
-{
-    std::cout << "Hello World!\n";
+
+
+int main(){
+
+    // Leer el nombre del archivo
+
+    string nombreArchivo;
+    cout << "Ingrese el nombre del archivo de entrada: ";
+    cin >> nombreArchivo;
+
+    ifstream archivo(nombreArchivo);
+    if (!archivo) {
+        cerr << "No se pudo abrir el archivo." << endl;
+        return 1;
+    }
+
+    vector<Registro> registros;
+
+    string fecha, hora, ubi;
+    char puntoEntrada;
+
+    while (archivo >> fecha >> hora >> puntoEntrada >> ubi) {
+        Registro registro (fecha, hora, puntoEntrada, ubi);
+        registros.push_back(registro);
+    }
+
+    archivo.close();
+
+    //-----------------------------------------------------------
+
+    for (int i = 0; i < registros.size(); i++) {
+		cout << registros[i].fecha << " " << registros[i].hora << " " << registros[i].punto_entrada << " " << registros[i].ubi << endl;
+	}
+
 }
 
-// Ejecutar programa: Ctrl + F5 o menú Depurar > Iniciar sin depurar
-// Depurar programa: F5 o menú Depurar > Iniciar depuración
-
-// Sugerencias para primeros pasos: 1. Use la ventana del Explorador de soluciones para agregar y administrar archivos
-//   2. Use la ventana de Team Explorer para conectar con el control de código fuente
-//   3. Use la ventana de salida para ver la salida de compilación y otros mensajes
-//   4. Use la ventana Lista de errores para ver los errores
-//   5. Vaya a Proyecto > Agregar nuevo elemento para crear nuevos archivos de código, o a Proyecto > Agregar elemento existente para agregar archivos de código existentes al proyecto
-//   6. En el futuro, para volver a abrir este proyecto, vaya a Archivo > Abrir > Proyecto y seleccione el archivo .sln
