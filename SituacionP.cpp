@@ -1,10 +1,14 @@
 // SituacionP.cpp
+#define _CRT_SECURE_NO_WARNINGS
+
 #include "SituacionP.h"
 #include <vector>
 #include <iostream>
 #include <string>
 using namespace std;
 
+//  Esta línea de código es parte de la implementación del constructor de la clase Registro y 
+// se utiliza para configurar los valores iniciales de los miembros de datos cuando se crea un nuevo objeto Registro.
 Registro::Registro(const std::string& f, const std::string& h, char p, const std::string& u)
     : fecha(f), hora(h), punto_entrada(p), ubi(u) {}
 
@@ -33,14 +37,32 @@ void Registro::merge(std::vector<Registro>& registros, int inicio, int mitad, in
 
     int i = 0, j = 0, k = inicio;
     while (i < n1 && j < n2) {
-        // Comparación de UBI primero y luego fecha
-        if (L[i].ubi + L[i].fecha < R[j].ubi + R[j].fecha) {
+        // Primero, compara por UBI
+        if (L[i].ubi < R[j].ubi) {
             registros[k] = L[i];
             i++;
         }
-        else {
+        else if (L[i].ubi > R[j].ubi) {
             registros[k] = R[j];
             j++;
+        }
+        else { // Si las UBI son iguales, compara por fecha en formato día/mes/año
+            std::string fechaL = L[i].fecha;
+            std::string fechaR = R[j].fecha;
+
+            int diaL, mesL, anioL, diaR, mesR, anioR;
+
+            sscanf(fechaL.c_str(), "%d/%d/%d", &diaL, &mesL, &anioL);
+            sscanf(fechaR.c_str(), "%d/%d/%d", &diaR, &mesR, &anioR);
+
+            if (anioL < anioR || (anioL == anioR && mesL < mesR) || (anioL == anioR && mesL == mesR && diaL < diaR)) {
+                registros[k] = L[i];
+                i++;
+            }
+            else {
+                registros[k] = R[j];
+                j++;
+            }
         }
         k++;
     }
@@ -59,22 +81,48 @@ void Registro::merge(std::vector<Registro>& registros, int inicio, int mitad, in
 }
 
 
+
+
 int Registro::busquedaBinaria(const std::vector<Registro>& registros, const std::string& serieABuscar) {
     int bajo = 0;
     int alto = registros.size() - 1;
+    vector<int> resultados;
 
     while (bajo <= alto) {
         int central = (bajo + alto) / 2;
         const std::string& ubiCentral = registros[central].ubi;
-        if (ubiCentral.substr(0, 3) == serieABuscar) {
-            return central;
-        }
-        else if (serieABuscar < ubiCentral.substr(0, 3)) {
-            alto = central - 1;
-        }
-        else {
+
+        // Verificar si la serie en UBI comienza con los primeros tres caracteres proporcionados
+        if (ubiCentral.compare(0, serieABuscar.size(), serieABuscar) < 0) {
             bajo = central + 1;
         }
+        else {
+            alto = central - 1;
+        }
+    }
+
+    // Encontrar todas las entradas que coinciden
+    int indice = bajo;
+    while (indice < registros.size()) {
+        const std::string& ubi = registros[indice].ubi;
+        if (ubi.compare(0, serieABuscar.size(), serieABuscar) == 0) {
+            resultados.push_back(indice);
+            indice++;
+        }
+        else {
+            break;
+        }
+    }
+
+    // Imprimir las entradas encontradas
+    if (!resultados.empty()) {
+        cout << "Entradas encontradas para la serie " << serieABuscar << ":" << endl;
+        for (int resultado : resultados) {
+            cout << registros[resultado].ubi << " " << registros[resultado].fecha << " " << registros[resultado].hora << " " << registros[resultado].punto_entrada << endl;
+        }
+    }
+    else {
+        cout << "No se encontraron entradas para la serie " << serieABuscar << "." << endl;
     }
 
     return -1;
