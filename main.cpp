@@ -48,20 +48,9 @@ int main() {
     cout << "Ingrese los primeros tres caracteres de la serie a buscar: ";
     cin >> serieABuscar;
 
-    // Utilizar la búsqueda binaria para encontrar la serie
-    int indiceEncontrado = Registro::busquedaBinaria(registros, serieABuscar);
+    Registro registro;
+    registro.busquedaBinaria(registros, serieABuscar);
 
-    if (indiceEncontrado != -1) {
-        // Mostrar los registros encontrados en orden UBI+Fecha
-        cout << "Registros encontrados para la serie " << serieABuscar << ":" << endl;
-        while (indiceEncontrado >= 0 && registros[indiceEncontrado].ubi.substr(0, 3) == serieABuscar) {
-            cout << registros[indiceEncontrado].ubi << " " << registros[indiceEncontrado].fecha << " " << registros[indiceEncontrado].hora << " " << registros[indiceEncontrado].punto_entrada << endl;
-            indiceEncontrado--;
-        }
-    }
-    else {
-        cout << "No se encontraron registros para la serie " << serieABuscar << "." << endl;
-    }
 
 
     return 0;
