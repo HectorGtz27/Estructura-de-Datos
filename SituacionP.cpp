@@ -93,12 +93,13 @@ int Registro::busquedaBinaria(const std::vector<Registro>& registros, const std:
         const std::string& ubiCentral = registros[central].ubi;
 
         // Verificar si la serie en UBI comienza con los primeros tres caracteres proporcionados
-        if (ubiCentral.compare(0, serieABuscar.size(), serieABuscar) < 0) {
+        if (ubiCentral < serieABuscar) {
             bajo = central + 1;
         }
         else {
             alto = central - 1;
         }
+        
     }
 
     // Encontrar todas las entradas que coinciden
