@@ -106,13 +106,15 @@ int Registro::busquedaBinaria(const std::vector<Registro>& registros, const std:
     int indice = bajo;
     while (indice < registros.size()) {
         const std::string& ubi = registros[indice].ubi;
-        if (ubi.compare(0, serieABuscar.size(), serieABuscar) == 0) {
+        // Aqui aunque se inserte 1 elemento lo va comparar igual con el tamaño de la serie a buscar
+        if (ubi.substr(0, serieABuscar.size()) == serieABuscar) {
             resultados.push_back(indice);
             indice++;
         }
         else {
             break;
         }
+        
     }
 
     // Imprimir las entradas encontradas
