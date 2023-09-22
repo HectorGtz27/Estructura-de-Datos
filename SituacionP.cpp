@@ -28,6 +28,7 @@ void Registro::merge(std::vector<Registro>& registros, int inicio, int mitad, in
     vector<Registro> L(n1);
     vector<Registro> R(n2);
 
+    // Aqui se copian los datos a los vectores temporales L y R
     for (int i = 0; i < n1; i++) {
         L[i] = registros[inicio + i];
     }
@@ -35,14 +36,17 @@ void Registro::merge(std::vector<Registro>& registros, int inicio, int mitad, in
         R[i] = registros[mitad + 1 + i];
     }
 
+    // Aqui ya se ordenan los datos
     int i = 0, j = 0, k = inicio;
     while (i < n1 && j < n2) {
         // Primero, compara por UBI
-        if (L[i].ubi < R[j].ubi) {
+        //L[i] puede utilizar . para acceder a los miembros de datos de la estructura Registro
+        // porque L[i] es un objeto Registro
+        if (L[i].ubi < R[j].ubi) { // Si la UBI de L es menor que la UBI de R
             registros[k] = L[i];
             i++;
         }
-        else if (L[i].ubi > R[j].ubi) {
+        else if (L[i].ubi > R[j].ubi) { // Si la UBI de L es mayor que la UBI de R
             registros[k] = R[j];
             j++;
         }
@@ -52,6 +56,8 @@ void Registro::merge(std::vector<Registro>& registros, int inicio, int mitad, in
 
             int diaL, mesL, anioL, diaR, mesR, anioR;
 
+            // sscanf() es una función de la biblioteca estándar de C que se utiliza para leer datos de una cadena de caracteres.
+            // fechaL.c_str() convierte el objeto string fechaL a una cadena de caracteres de C.
             sscanf(fechaL.c_str(), "%d/%d/%d", &diaL, &mesL, &anioL);
             sscanf(fechaR.c_str(), "%d/%d/%d", &diaR, &mesR, &anioR);
 
@@ -67,13 +73,13 @@ void Registro::merge(std::vector<Registro>& registros, int inicio, int mitad, in
         k++;
     }
 
-    while (i < n1) {
+    while (i < n1) { // Aqui se copian los elementos restantes de L
         registros[k] = L[i];
         i++;
         k++;
     }
 
-    while (j < n2) {
+    while (j < n2) { // Aqui se copian los elementos restantes de R
         registros[k] = R[j];
         j++;
         k++;
@@ -90,16 +96,18 @@ int Registro::busquedaBinaria(const std::vector<Registro>& registros, const std:
 
     while (bajo <= alto) {
         int central = (bajo + alto) / 2;
-        const std::string& ubiCentral = registros[central].ubi;
+        const std::string& ubiCentral = registros[central].ubi; // Aqui se toma una UBI del registro que se encuentra en la posición central
 
-        // Verificar si la serie en UBI comienza con los primeros tres caracteres proporcionados
+        
         if (ubiCentral < serieABuscar) {
+            cout << "ubiCentral: " << ubiCentral << " < " << serieABuscar << endl;
             bajo = central + 1;
         }
         else {
+            cout << "ubiCentral: " << ubiCentral << " >= " << serieABuscar << endl;
             alto = central - 1;
         }
-        
+
     }
 
     // Encontrar todas las entradas que coinciden
@@ -114,7 +122,7 @@ int Registro::busquedaBinaria(const std::vector<Registro>& registros, const std:
         else {
             break;
         }
-        
+
     }
 
     // Imprimir las entradas encontradas
