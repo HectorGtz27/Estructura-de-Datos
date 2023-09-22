@@ -10,7 +10,7 @@ int main() {
     // Leer el nombre del archivo
     string nombreArchivo;
     cout << "Ingrese el nombre del archivo de entrada: ";
-    cin >> nombreArchivo;
+    cin >> nombreArchivo;  
 
     ifstream archivo(nombreArchivo);
     if (!archivo) {
@@ -23,6 +23,8 @@ int main() {
     string fecha, hora, ubi;
     char puntoEntrada;
 
+    // Aqui se lee el archivo y se guardan los registros en el vector
+    // cada uno con su fecha, hora, punto de entrada y UBI
     while (archivo >> fecha >> hora >> puntoEntrada >> ubi) {
         Registro registro(fecha, hora, puntoEntrada, ubi);
         registros.push_back(registro);
